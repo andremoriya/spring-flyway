@@ -37,13 +37,10 @@ public class RepositoryConfig {
         return factory;
     }
 
-    @Bean(initMethod = "migrate")
-    public Flyway flyway() {
-        Flyway flyway = new Flyway();
-        flyway.setBaselineOnMigrate(true);
-        flyway.setLocations("classpath:db/migration");
-        flyway.setDataSource(dataSource());
-        return flyway;
+    @Bean(initMethod = "repairAndMigrate")
+    public MigrationConfig flyway() {
+        MigrationConfig migration = MigrationConfig.of(this.dataSource());
+        return migration;
     }
 
     private DataSource dataSource() {
